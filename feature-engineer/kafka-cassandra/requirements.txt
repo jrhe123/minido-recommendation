@@ -1,0 +1,4 @@
+Flask==2.0.1
+kafka-python==2.0.2
+Flask-Cors==3.0.10
+cassandra-driver==3.25.0
