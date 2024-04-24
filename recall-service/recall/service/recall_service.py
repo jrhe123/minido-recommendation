@@ -1,18 +1,18 @@
-from recall.context import Context
-from typing import List
-import recall.strategy as strategy
 import concurrent.futures
 import time
-from recall import util
+from typing import List
 
+import recall.strategy as strategy
+from recall import util
+from recall.context import Context
 
 strategies: List[strategy.RecallStrategy] = [
     # testing
     # strategy.SimpleRecallStrategy(),
-
     strategy.HighRatingStrategy(),
     strategy.MostRatingStrategy(),
 ]
+
 
 def anime_recall(context: Context, n=20) -> List[int]:
     """
@@ -23,7 +23,7 @@ def anime_recall(context: Context, n=20) -> List[int]:
     with concurrent.futures.ThreadPoolExecutor() as executor:
         # 1. iterate all the strategies we init above
         outputs = executor.map(lambda s: run_strategy(s, context, n), strategies)
-        
+
         """
         outputs: [
             [1,2,3], # simple strategy
@@ -39,7 +39,7 @@ def anime_recall(context: Context, n=20) -> List[int]:
         outputs = [id for sub_list in outputs for id in sub_list]
         # 2.2 remove duplicates
         outputs = list(dict.fromkeys(outputs))
-        print(f'Got {len(outputs)} uniq recall results')
+        print(f"Got {len(outputs)} uniq recall results")
 
         return outputs
 
@@ -56,5 +56,5 @@ def run_strategy(strategy: strategy.RecallStrategy, context: Context, n):
     start_time = time.time()
     res = strategy.recall(context, n=n)
     elapse_time = time.time() - start_time
-    print('Strategy %s took %.2fms' % (strategy.name(), elapse_time * 1000))
+    print("Strategy %s took %.2fms" % (strategy.name(), elapse_time * 1000))
     return res

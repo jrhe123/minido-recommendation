@@ -1,12 +1,12 @@
 import csv
 import os.path
+
 from api.config import config
 
-
 # anime_file = open(os.path.join(config['dataset_path'], 'merged_anime.csv'))
-anime_file = open(os.path.join(config['dataset_path'], 'anime.csv'))
+anime_file = open(os.path.join(config["dataset_path"], "anime.csv"))
 reader = csv.DictReader(anime_file)
-animes = { row['anime_id']: row for row in reader }
+animes = {row["anime_id"]: row for row in reader}
 
 
 def get_anime(id):

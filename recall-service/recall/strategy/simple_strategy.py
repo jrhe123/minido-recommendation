@@ -1,6 +1,5 @@
-from recall.strategy.recall_strategy import RecallStrategy
 import recall.dataset.anime as dataset
-
+from recall.strategy.recall_strategy import RecallStrategy
 
 
 class SimpleRecallStrategy(RecallStrategy):
@@ -8,7 +7,7 @@ class SimpleRecallStrategy(RecallStrategy):
         super().__init__()
 
     def name(self):
-        return 'Simple'
+        return "Simple"
 
     def recall(self, context, n):
         (anime_df, _) = dataset.load_dataset()

@@ -1,5 +1,6 @@
-from recall.context import Context
 from typing import List
+
+from recall.context import Context
 
 
 class RecallStrategy:

@@ -1,13 +1,14 @@
-from recall.strategy.recall_strategy import RecallStrategy
 import recall.dataset.anime as dataset
+from recall.strategy.recall_strategy import RecallStrategy
 
 (anime_df, _) = dataset.load_dataset()
 # sort by id
 sorted_df = anime_df.sort_index()
 
+
 class SimilarAnimeStrategy(RecallStrategy):
     def name(self):
-        return 'Similar Anime'
+        return "Similar Anime"
 
     def recall(self, context, n=20):
         """
@@ -22,4 +23,4 @@ class SimilarAnimeStrategy(RecallStrategy):
         if from_index + n > len(sorted_df):
             from_index = len(sorted_df) - n
 
-        return sorted_df.iloc[from_index: from_index + n].index.to_list()
+        return sorted_df.iloc[from_index : from_index + n].index.to_list()

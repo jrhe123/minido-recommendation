@@ -36,3 +36,9 @@ sh start.sh
 - most rating / high rating
 - create pool (n=1000)
 - random select 20 in the pool 
+
+### 最近邻查找算法
+- Brute force: O(KN)
+- K-D tree: O(sqart(n))
+- K-Means
+- LSH (Spark Mllib / FAISS) O(K)
