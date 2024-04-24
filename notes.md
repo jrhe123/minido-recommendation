@@ -37,7 +37,7 @@ sh start.sh
 - create pool (n=1000)
 - random select 20 in the pool 
 
-### 最近邻查找算法
+### 最近邻查找算法 ANN
 - Brute force: O(KN)
 - K-D tree: O(sqart(n))
 - K-Means

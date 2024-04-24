@@ -5,12 +5,16 @@ from typing import List
 import recall.strategy as strategy
 from recall import util
 from recall.context import Context
+from recall.dataset.embedding import get_one_item_embedding
+from recall.model.lsh import get_item_lsh
 
 strategies: List[strategy.RecallStrategy] = [
     # testing
     # strategy.SimpleRecallStrategy(),
     strategy.HighRatingStrategy(),
     strategy.MostRatingStrategy(),
+    # embedding
+    strategy.UserEmbeddingStrategy(),
 ]
 
 
@@ -44,12 +48,19 @@ def anime_recall(context: Context, n=20) -> List[int]:
         return outputs
 
 
+# def similar_animes(context: Context, n=20) -> List[int]:
+#     """
+#     returns a list of anime ids
+#     """
+#     stra = strategy.SimilarAnimeStrategy()
+#     return stra.recall(context, n)
+
+
 def similar_animes(context: Context, n=20) -> List[int]:
-    """
-    returns a list of anime ids
-    """
-    stra = strategy.SimilarAnimeStrategy()
-    return stra.recall(context, n)
+    lsh = get_item_lsh()
+    target_item_emb = get_one_item_embedding(context.anime_id)
+    outputs = lsh.search(target_item_emb, n=n)
+    return outputs
 
 
 def run_strategy(strategy: strategy.RecallStrategy, context: Context, n):
