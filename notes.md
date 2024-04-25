@@ -42,3 +42,6 @@ sh start.sh
 - K-D tree: O(sqart(n))
 - K-Means
 - LSH (Spark Mllib / FAISS) O(K)
+
+### tensorflow
+- https://playground.tensorflow.org/
