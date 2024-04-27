@@ -20,6 +20,7 @@ __pycache__
 hparams/
 mlp_model
 **/redis_data/**
+**/anime-data/**
 
 
 # Logs
