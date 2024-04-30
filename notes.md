@@ -97,3 +97,40 @@ sh start.sh
 
 使用z-score来判断：strategy A or B
 => 如果效果不好，则退回旧的model
+
+
+### cold start
+- retention rate
+- registration flow
+1. demographics
+2. source channel
+3. user relationship
+4. tags collection
+5. top sell items
+6. 专家打标 (例如：适合30岁男性)
+
+### 实时性
+- UGC：较强 (小红书) content created by users
+- PGC：较弱 （电影网）content created by professionals
+
+批处理 / 流处理 (trend & 短时间特征)
+
+- 稀疏性
+- FTRL 模型
+- 全量更新、增量更新
+
+
+### Apache Flink
+
+准实时性：
+- Kafka -> Flink(简单聚类) -> Redis (保存)
+- user call: Redis -> Recall -> Rank
+
+强实时性：
+- user call: with last 1 minute history
+-> recall -> rank
+
+=> add higher weight to (last 1 minute history)
+
+- 计算窗口
+Event time -> kafka -> flink ingestion time (写入时间) -> flink process time (处理时间)

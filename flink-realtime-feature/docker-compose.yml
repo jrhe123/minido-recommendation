@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  jobmanager:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"  # Expose Flink Web UI
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+    command: standalone-job.sh start-foreground  # Adjusted command for jobmanager
+
+  taskmanager:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+    command: taskmanager.sh start-foreground  # Adjusted command for taskmanager

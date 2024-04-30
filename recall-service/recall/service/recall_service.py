@@ -16,6 +16,8 @@ strategies: List[strategy.RecallStrategy] = [
     strategy.MostRatingStrategy(),
     # embedding
     strategy.UserEmbeddingStrategy(),
+    # recent click
+    # strategy.RecentClickStrategy(),
 ]
 
 # experiments:

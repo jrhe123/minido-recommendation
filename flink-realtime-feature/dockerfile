@@ -1,0 +1,28 @@
+# Start from a Java base image that supports ARM64
+FROM arm64v8/openjdk:11
+
+# Set the environment variables
+ENV FLINK_VERSION=1.12.0
+ENV SCALA_VERSION=2.11
+ENV FLINK_HOME=/opt/flink
+ENV PATH=$PATH:$FLINK_HOME/bin
+
+# Install dependencies and tools
+RUN apt-get update && apt-get install -y wget
+
+# Download and unpack Apache Flink
+RUN wget -q https://archive.apache.org/dist/flink/flink-$FLINK_VERSION/flink-$FLINK_VERSION-bin-scala_$SCALA_VERSION.tgz \
+    && tar -xzf flink-$FLINK_VERSION-bin-scala_$SCALA_VERSION.tgz -C /opt \
+    && rm flink-$FLINK_VERSION-bin-scala_$SCALA_VERSION.tgz \
+    && mv /opt/flink-$FLINK_VERSION $FLINK_HOME
+
+# Configure Flink to run in standalone mode with a single JobManager and TaskManager
+RUN sed -i -e "s/taskmanager.numberOfTaskSlots: 1/taskmanager.numberOfTaskSlots: 4/g" $FLINK_HOME/conf/flink-conf.yaml \
+    && echo "jobmanager.memory.process.size: 1600m" >> $FLINK_HOME/conf/flink-conf.yaml \
+    && echo "taskmanager.memory.process.size: 1728m" >> $FLINK_HOME/conf/flink-conf.yaml
+
+# Expose necessary ports (8081 for Flink WebUI)
+EXPOSE 8081
+
+# Default command: start the Flink cluster
+CMD ["start-cluster.sh"]
