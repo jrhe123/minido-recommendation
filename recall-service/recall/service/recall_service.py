@@ -7,6 +7,7 @@ from recall import util
 from recall.context import Context
 from recall.dataset.embedding import get_one_item_embedding
 from recall.model.lsh import get_item_lsh
+from recall.util import bucketize
 
 strategies: List[strategy.RecallStrategy] = [
     # testing
@@ -17,16 +18,28 @@ strategies: List[strategy.RecallStrategy] = [
     strategy.UserEmbeddingStrategy(),
 ]
 
+# experiments:
+# 0: strategy: HighRatingStrategy & MostRatingStrategy
+# 1: strategy: HighRatingStrategy & MostRatingStrategy & UserEmbeddingStrategy
+
 
 def anime_recall(context: Context, n=20) -> List[int]:
     """
     returns a list of anime ids
     """
 
+    # A/B testing
+    bucket = bucketize(context.user_id, 2)
+    experiment_strategies = strategies[:2]
+    if bucket == 1:
+        experiment_strategies = strategies
+
     # multi-thread
     with concurrent.futures.ThreadPoolExecutor() as executor:
         # 1. iterate all the strategies we init above
-        outputs = executor.map(lambda s: run_strategy(s, context, n), strategies)
+        outputs = executor.map(
+            lambda s: run_strategy(s, context, n), experiment_strategies
+        )
 
         """
         outputs: [
@@ -45,7 +58,13 @@ def anime_recall(context: Context, n=20) -> List[int]:
         outputs = list(dict.fromkeys(outputs))
         print(f"Got {len(outputs)} uniq recall results")
 
-        return outputs
+        return [
+            {
+                "anime_id": id,
+                "ab:recall": bucket,
+            }
+            for id in outputs
+        ]
 
 
 # def similar_animes(context: Context, n=20) -> List[int]:

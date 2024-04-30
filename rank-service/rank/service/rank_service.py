@@ -4,18 +4,31 @@ import numpy as np
 import rank.dataset.feature as dataset
 import rank.util.recall_service_client as recall_client
 from rank.model.mlp import RankModel
+from rank.util.ab_test import bucketize
 
 model = RankModel()
 
 
 def anime_rank(context, n=20):
     user_id = context.user_id
-    recall_res = recall_client.get_recall(context.user_id)
-    # sample 20 of them
-    # return sample(recall_res, n)
+    recall_items = recall_client.get_recall(context.user_id)
 
-    rank_results = mlp_rank(user_id, recall_res)
-    return rank_results
+    recall_res = [item["anime_id"] for item in recall_items]
+    recall_mapping = {item["anime_id"]: item for item in recall_items}
+    rank_results = recall_res
+
+    # A/B testing
+    bucket = bucketize(user_id, 2)
+    if bucket == 1:
+        rank_results = mlp_rank(user_id, recall_res)
+
+    return [
+        {
+            **recall_mapping[aid],
+            "ab:rank": bucket,
+        }
+        for aid in rank_results
+    ]
 
 
 def mlp_rank(user_id, recall_res):
