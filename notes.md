@@ -134,3 +134,24 @@ sh start.sh
 
 - 计算窗口
 Event time -> kafka -> flink ingestion time (写入时间) -> flink process time (处理时间)
+
+
+### reinforcement learning
+
+- alpha go
+- flappy bird: reward, agent, state, action
+
+s1,a1,r1 => s2,a2,r2 => s3,a3,r3
+
+回报函数
+U = r1 + y*r2 + y^2*r3 +...
+
+y = 0 ~ 1
+
+着眼于现在的回报, 未来的回报有衰减函数
+
+
+### wide & deep
+
+- 女生喜欢裙子
+- 不喜欢红色裙子

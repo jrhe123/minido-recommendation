@@ -12,6 +12,21 @@
 **/LaMini-T5-738M/**
 **/local_qdrant/**
 
+# pytorch stuff
+/pytorch_bilibili/dataset/
+
+/pytorch_youtube/hymenoptera_data/
+/pytorch_youtube/dataset/
+/pytorch_youtube/p10/
+/pytorch_youtube/p11/
+/pytorch_youtube/p14/
+/pytorch_youtube/p15/
+/pytorch_youtube/p16/
+/pytorch_youtube/p18/
+/pytorch_youtube/p22/
+
+/pytorch_2023/dataset/
+
 # recommendation system
 venv
 output/
